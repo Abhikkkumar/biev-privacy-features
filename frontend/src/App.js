@@ -17,7 +17,7 @@ import Following from "./components/Following";
 import Privacy from "./screen/Privacy";
 import WriteToUs from "./screen/WriteToUs";
 import SearchResult from "./screen/SearchResult";
-import Footer from "./components/Footer";
+
 
 function App() {
   const [userLogin, setUserLogin] = useState(false);
@@ -42,6 +42,7 @@ function App() {
           }}
         >
           <Navabar login={userLogin} searchValue={searchValue} setShowSearch={setShowSearch} setSearchValue={setSearchValue}/>
+          
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
@@ -53,6 +54,7 @@ function App() {
             <Route path="/privacy" element={<Privacy />}></Route>
             <Route path="/writetous" element={<WriteToUs />}></Route>
           </Routes>
+         
           <ToastContainer theme="dark" />
           {modalOpen && (
             <Modal
@@ -70,7 +72,7 @@ function App() {
           {showSearch && (
             <SearchResult searchValue={searchValue} setSearchValue={setSearchValue} setShowSearch={setShowSearch} />
           )}
-          <Footer />
+          
         </LoginContext.Provider>
       </div>
     </BrowserRouter>

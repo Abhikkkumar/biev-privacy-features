@@ -4,6 +4,7 @@ import logo_1 from "../img/logo-1.jpg";
 import "../css/signup.css";
 import axios from "axios";
 import { toast } from "react-toastify"; // react-toastify is used to handle notification beautifully
+import Footer from "../components/Footer";
 
 const SignUp = () => {
   //------------ api call only using JS
@@ -51,6 +52,7 @@ const SignUp = () => {
   }
 
   return (
+    <div className="s-createPost" >
     <div className="signUp">
       <div className="form-container">
         <div className="form">
@@ -142,6 +144,8 @@ const SignUp = () => {
           </Link>
         </div>
       </div>
+    </div>
+    <Footer />
     </div>
   );
 };

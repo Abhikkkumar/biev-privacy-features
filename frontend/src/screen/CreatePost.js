@@ -4,6 +4,7 @@ import "../css/createPost.css";
 import axios from "axios";
 import { toast } from "react-toastify";
 import LimitedSharing from "../components/LimitedSharing.js";
+import Footer from "../components/Footer";
 
 export default function CreatePost() {
   const [body, setBody] = useState("");
@@ -11,7 +12,6 @@ export default function CreatePost() {
   const [url, setUrl] = useState("");
   const [limitShare, setLimitShare] = useState(false);
   const [allowedUser, setAllowedUser] = useState([]);
-  
 
   const notifyError = (message) => toast.error(message);
   const notifySuccess = (message) => toast.success(message);
@@ -24,24 +24,20 @@ export default function CreatePost() {
       const dataToDb = {
         caption: body,
         photo: url,
-        canSee:allowedUser
+        canSee: allowedUser,
       };
 
       //function to save data to Db
       async function saveToDb(dataToDb) {
-        console.log("saveToDb() is running.");
+        // console.log("saveToDb() is running.");
 
         try {
-          const result = await axios.post(
-            "/createPost",
-            dataToDb,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-              },
-            }
-          );
+          const result = await axios.post("/createPost", dataToDb, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+            },
+          });
           notifySuccess(result.data.message);
           if (url) setUrl("");
           navigate("/");
@@ -53,7 +49,7 @@ export default function CreatePost() {
       }
       if (url) saveToDb(dataToDb);
     }
-  }, [url, body,navigate]);
+  }, [url, body, navigate]);
 
   async function postData() {
     //uploading data to cloudinary
@@ -69,7 +65,7 @@ export default function CreatePost() {
       setUrl(result.data.url);
       console.log(result.data.url);
     } catch (err) {
-      notifyError("Please fill all the fields!")
+      notifyError("Please fill all the fields!");
       // console.log("err in posting data to cloudinary", err);
     }
   }
@@ -83,67 +79,79 @@ export default function CreatePost() {
   };
 
   return (
-    <div className="createPost">
-      <div className="post-header">
-      <button
-          id="l-post-btn"
-          className="post-btn"
-          onClick={() => {
-            setLimitShare(true);
-          }}
-        >
-          Limited Share
-        </button>
-        <h4>Create new post</h4>
-        <button
-          id="post-btn"
-          className="post-btn"
-          onClick={() => {
-            postData();
-            // console.log("papaya");
-          }}
-        >
-          Share To All
-        </button>
-        
-      </div>
-
-      <div className="main-div">
-        <img
-          id="output"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/1200px-Picture_icon_BLACK.svg.png"
-          alt="selected-img-preview"
-        />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(event) => {
-            loadFile(event);
-            setImage(event.target.files[0]);
-          }}
-        />
-      </div>
-
-      <div className="share-details">
-        <div className="card-header">
-          <div className="card-pic">
-            <img
-              src={JSON.parse(localStorage.getItem("user")).photo? JSON.parse(localStorage.getItem("user")).photo : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAOWugjv2va31k9P7BfE-vQ47mcaMV7idM9g&usqp=CAU"}
-              alt="user-profile-pic"
-            />
-          </div>
-          <h5>{JSON.parse(localStorage.getItem("user")).name}</h5>
+    <div className="s-createPost">
+      <div className="createPost">
+        <div className="post-header">
+          <button
+            id="l-post-btn"
+            className="post-btn"
+            onClick={() => {
+              setLimitShare(true);
+            }}
+          >
+            Limited Share
+          </button>
+          <h4>Create new post</h4>
+          <button
+            id="post-btn"
+            className="post-btn"
+            onClick={() => {
+              postData();
+              // console.log("papaya");
+            }}
+          >
+            Share To All
+          </button>
         </div>
-        <textarea
-          value={body}
-          type="text"
-          placeholder="Write a caption..."
-          onChange={(event) => {
-            setBody(event.target.value);
-          }}
-        ></textarea>
+
+        <div className="main-div">
+          <img
+            id="output"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/1200px-Picture_icon_BLACK.svg.png"
+            alt="selected-img-preview"
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(event) => {
+              loadFile(event);
+              setImage(event.target.files[0]);
+            }}
+          />
+        </div>
+
+        <div className="share-details">
+          <div className="card-header">
+            <div className="card-pic">
+              <img
+                src={
+                  JSON.parse(localStorage.getItem("user")).photo
+                    ? JSON.parse(localStorage.getItem("user")).photo
+                    : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAOWugjv2va31k9P7BfE-vQ47mcaMV7idM9g&usqp=CAU"
+                }
+                alt="user-profile-pic"
+              />
+            </div>
+            <h5>{JSON.parse(localStorage.getItem("user")).name}</h5>
+          </div>
+          <textarea
+            value={body}
+            type="text"
+            placeholder="Write a caption..."
+            onChange={(event) => {
+              setBody(event.target.value);
+            }}
+          ></textarea>
+        </div>
+        {limitShare && (
+          <LimitedSharing
+            postData={postData}
+            setLimitShare={setLimitShare}
+            setAllowedUser={setAllowedUser}
+          />
+        )}
       </div>
-      {limitShare && <LimitedSharing postData={postData} setLimitShare={setLimitShare} setAllowedUser={setAllowedUser}/>}
+      <Footer />
     </div>
   );
 }

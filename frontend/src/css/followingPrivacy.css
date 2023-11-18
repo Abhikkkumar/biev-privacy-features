@@ -2,6 +2,9 @@
     width: 75%;
     margin: 0 auto;
 }
+.limited-sharing{
+    max-height: 475px;
+}
 .f-p-list{
     
     text-align: left;

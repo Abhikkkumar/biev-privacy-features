@@ -1,5 +1,6 @@
 .profile {
   max-width: 600px;
+  min-height: 90vh;
   margin: 10px auto;
 }
 

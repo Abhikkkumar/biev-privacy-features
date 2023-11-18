@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { LoginContext } from "../contexts/LoginContext";
 import ProfilePic from "../components/ProfilePic";
 import { toast } from "react-toastify";
+import Footer from "../components/Footer";
 
 const UserProfile = () => {
   const { userid } = useParams();
@@ -134,79 +135,82 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="profile">
-      {/* profile-frame */}
-      <div className="profile-frame">
-        {/* profile-pic */}
-        <div className="profile-pic">
-          <img
-            src={decideProfilePhoto()}
-            alt="profile-pic"
-            onClick={() => {
-              changeProfile();
-            }}
-          />
-        </div>
-
-        {/* profile-data */}
-        <div className="profile-data">
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            {userid !== loggedUser._id ? (
-              <>
-                <h1>{user.name}</h1>
-                <button
-                  className="followBtn"
-                  onClick={() => {
-                    isFollowed ? unfollowUser(userid) : followUser(userid);
-                  }}
-                >
-                  {isFollowed ? "Unfollow" : "Follow"}
-                </button>
-              </>
-            ) : (
-              <h1>{user.name} (You)</h1>
-            )}
+    <div className="s-createPost">
+      <div className="profile">
+        {/* profile-frame */}
+        <div className="profile-frame">
+          {/* profile-pic */}
+          <div className="profile-pic">
+            <img
+              src={decideProfilePhoto()}
+              alt="profile-pic"
+              onClick={() => {
+                changeProfile();
+              }}
+            />
           </div>
 
-          <div className="profile-info">
-            <p>{posts.length} posts</p>
-            <p
-              onClick={(e) => {
-                setHeading(e);
+          {/* profile-data */}
+          <div className="profile-data">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
               }}
-              style={{ cursor: "pointer" }}
             >
-              {user.followers ? user.followers.length : 0} Followers
-            </p>
-            <p
-              onClick={(e) => {
-                setHeading(e);
-              }}
-              style={{ cursor: "pointer" }}
-            >
-              {user.following ? user.following.length : 0} Following
-            </p>
+              {userid !== loggedUser._id ? (
+                <>
+                  <h1>{user.name}</h1>
+                  <button
+                    className="followBtn"
+                    onClick={() => {
+                      isFollowed ? unfollowUser(userid) : followUser(userid);
+                    }}
+                  >
+                    {isFollowed ? "Unfollow" : "Follow"}
+                  </button>
+                </>
+              ) : (
+                <h1>{user.name} (You)</h1>
+              )}
+            </div>
+
+            <div className="profile-info">
+              <p>{posts.length} posts</p>
+              <p
+                onClick={(e) => {
+                  setHeading(e);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                {user.followers ? user.followers.length : 0} Followers
+              </p>
+              <p
+                onClick={(e) => {
+                  setHeading(e);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                {user.following ? user.following.length : 0} Following
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-      <hr style={{ width: "90%", opacity: "0.8", margin: "20px auto" }} />
+        <hr style={{ width: "90%", opacity: "0.8", margin: "20px auto" }} />
 
-      {/* Gallery */}
-      <div className="gallery">
-        {posts.map((eachPost) => {
-          return (
-            <img key={eachPost._id} src={eachPost.photo} alt="profile-pic" />
-          );
-        })}
+        {/* Gallery */}
+        <div className="gallery">
+          {posts.map((eachPost) => {
+            return (
+              <img key={eachPost._id} src={eachPost.photo} alt="profile-pic" />
+            );
+          })}
+        </div>
+        {/* <Following /> */}
+        {changePic && <ProfilePic changeProfile={changeProfile} />}
       </div>
-      {/* <Following /> */}
-      {changePic && <ProfilePic changeProfile={changeProfile} />}
+      <Footer />
     </div>
   );
 };

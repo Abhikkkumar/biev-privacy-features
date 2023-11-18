@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { LoginContext } from '../contexts/LoginContext';
+import Footer from "../components/Footer";
 
 const SignIn = () => {
   const {setUserLogin} = useContext(LoginContext);
@@ -35,6 +36,7 @@ const SignIn = () => {
   }
 
   return (
+    <div className="s-createPost" >
     <div className='signIn'>
       <div>
         <div className='loginForm'>
@@ -86,6 +88,8 @@ const SignIn = () => {
           
         </div>
       </div>
+    </div>
+    <Footer />
     </div>
   )
 }
